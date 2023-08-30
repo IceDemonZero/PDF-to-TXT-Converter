@@ -9,10 +9,9 @@ from pypdf import PdfReader, PdfWriter
 import pytesseract as tess
 import constants
 import os
-import re
 
 
-class Extractor:
+class Converter:
     """
     This module provides a class Extractor for extracting the text contents from a PDF file. It uses either optical
     character recognition (OCR) or a normal read.
@@ -110,17 +109,4 @@ class Extractor:
     # return the extracted text
     def get_text(self):
         if self.text != "" or None:
-            self.filter()
             return self.text
-
-    # used to remove unnecessary bits from academic papers
-    # will remove everything before the introduction and everything after the references
-    # will also remove everything before the abstract
-    def filter(self):
-        if self.text != "" or None:
-            introduction_split = re.split("introduction", self.text, flags=re.IGNORECASE)
-            if len(introduction_split) > 1:  # split before an introduction if it exists
-                self.text = introduction_split[1]
-            references_split = re.split("references", self.text, flags=re.IGNORECASE)
-            if len(references_split) > 1:
-                self.text = references_split[0]
